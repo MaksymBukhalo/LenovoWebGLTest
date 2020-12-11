@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Unity WebGL Player | Lenovo Boost WebGL</title>
+
+	<link rel="stylesheet" href="src/video.popup.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<!-- Smart look -->
+	<script type='text/javascript'>
+		window.smartlook||(function(d) {
+			var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
+			var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
+			c.charset='utf-8';c.src='https://rec.smartlook.com/recorder.js';h.appendChild(c);
+		})(document);
+    smartlook('init', 'c2bd8b5285859c94b0247d8085f370d800ce2d79');
+</script>
+	
+	<script type="text/javascript">
+    var delay_popup = 500;
+    setTimeout("document.getElementById('bg_popup').style.display='block'", delay_popup);
+</script> 
+
+	<style>
+		/* * {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			overflow: hidden;
+		} */
+
+		/* Safari fix */
+		input {
+			/* Chrome, Opera, Safari */
+			-webkit-user-select: text;
+			/* Firefox 2+ */
+			-moz-user-select: text;
+			/* IE 10+ */
+			-ms-user-select: text;
+			/* Standard syntax */
+			user-select: text;
+		}
+
+		#gameContainer canvas {
+			display: block;
+		}
+
+		div#webgl-content {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+		}
+
+		div#loadingBox {
+			width: 100%;
+			height: 0px;
+			position: absolute;
+			top: 50%;
+			margin-top: 137px;
+			text-align: center;
+		}
+
+		div#icon {
+			width: 300px;
+			height: 310px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -185px;
+			margin-left: -150px;
+			background-image: url("Template/anthill.png");
+			background-repeat: no-repeat;
+			box-shadow: 1px 1px 5px #141414;
+		}
+
+		div#box {
+			/* width: 328px;
+			height: 367px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -199px;
+			margin-left: -164px;
+			background: #222;
+			box-shadow: 1px 1px 5px #000; */
+
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			background: #222;
+			box-shadow: 1px 1px 5px #000;
+			background-image: url("Template/LenovoBG.jpg");
+			background-size: auto;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		}
+
+		div#bgBar {
+			display: none;
+			position: absolute;
+			width: 300px;
+			margin-left: -150px;
+			left: 50%;
+			height: 18px;
+			background-color: #218822;
+			box-shadow: 1px 1px 5px #111;
+		}
+
+		div#progressBar {
+			display: none;
+			left: 50%;
+			position: absolute;
+			margin-left: -150px;
+			width: 0px;
+			height: 18px;
+			background-color: #65dc41;
+		}
+
+		p#loadingInfo {
+			color: #fff;
+			letter-spacing: 1px;
+			position: absolute;
+			width: 100%;
+			font-family: sans-serif;
+			text-align: center;
+			top: 50%;
+			font-size: 11px;
+			font-weight: 500;
+			margin-top: 140px;
+			text-shadow: 0px 0px 5px #000;
+		}
+
+		div#spinner {
+			position: absolute;
+			height: 18px;
+			left: 50%;
+			margin-left: -150px;
+			width: 300px;
+			position: relative;
+			overflow: hidden;
+			background-color: #4CAF50;
+			box-shadow: 1px 1px 5px #111;
+		}
+
+		div#spinner:before {
+			display: block;
+			position: absolute;
+			content: "";
+			width: 150%;
+			margin-left: -10px;
+			height: 10px;
+			background-color: #52e884;
+			transform: rotate(-5deg);
+			animation: loading 1s linear infinite;
+		}
+
+		@keyframes loading {
+			from {
+				top: -185%
+			}
+
+			to {
+				top: 225%
+			}
+		}
+
+
+
+		body,
+		html {
+			font-size: 0.9em;
+			height: 100%;
+			/* background-image: url("./Template/ChalkboardBackground.jpg"); */
+			height: 100%;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+
+		}
+
+		.bg {
+			height: 100%;
+		}
+
+		.logo {
+			width: 24vw;
+		}
+
+		label {
+			font-weight: bold;
+		}
+
+		.my-but {
+			font-size: 1.4rem;
+		}
+
+		@media all and (max-width: 1200px) {
+
+			/* screen size until 1200px */
+			body {
+				font-size: 1.5em;
+				/* 1.5x default size */
+			}
+		}
+
+		@media all and (max-width: 1000px) {
+
+			/* screen size until 1000px */
+			body {
+				font-size: 1.2em;
+				/* 1.2x default size */
+			}
+		}
+
+		@media all and (max-width: 500px) {
+
+			/* screen size until 500px */
+			body {
+				font-size: 0.8em;
+				/* 0.8x default size */
+			}
+
+			h2 {
+				font-size: 1.2rem;
+				margin-bottom: 20px !important;
+			}
+
+			h6 {
+				font-size: .8rem;
+			}
+
+			.my-but {
+				font-size: 1rem;
+			}
+
+			small {
+				font-size: 90%;
+			}
+		}
+	</style>
+	 <style>
+			   #bg_popup{
+			background-color: rgba(0, 0, 0, 0.8);
+			display: none;
+			position: fixed;
+			z-index: 99999;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			}
+  
+			#popup {
+			background: #232323;
+			display:block;
+			position:absolute;
+			top:-400px;
+			right:0px;
+			bottom: 0px;
+			left: 0;
+			width: 1500px;
+			height: 800px;
+			background-image: url("./Template/Background.png");
+			margin: 25% auto;
+			padding: 5px 20px 13px 20px;
+			border: 2px solid #1BA600;
+			position: relative;
+			-webkit-box-shadow: 0px 0px 20px #000;
+			-moz-box-shadow: 0px 0px 20px #000;
+			box-shadow: 0px 0px 20px #000;
+			-webkit-border-radius: 15px;
+			-moz-border-radius: 15px;
+			border-radius: 15px;
+			}
+   </style>
+
+	<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script src="src/video.popup.js"></script> -->
+
+	<!-- FancyBox -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+	<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+	
+  <script src="Build/UnityLoader.js"></script>
+	 <script>
+   function isEmail() {
+    var str = document.getElementById("email").value;
+	var strName = document.getElementById("user_name").value;
+    var re = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
+    if (re.test(str) && !isEmpty(strName))
+	{
+		document.getElementById('bg_popup').style.display='none';
+				// Init UUID and Smartlook User ID
+				// Get now time
+				var n = Date.now();
+				// Generate random
+				var r = Math.random();
+				// Stringify now time and generate additional random number
+				var s = String(n) + String(~~(r * 9e4) + 1e4);
+				// Form UUID and return it
+				var idSmartlook = `${s.slice(0, 8)}-${s.slice(8, 12)}-4${s.slice(12, 15)}-${[8, 9, 'a', 'b'][~~(r * 3)]}${s.slice(15, 18)}-${s.slice(s.length - 12)}`;
+			smartlook('identify', idSmartlook, {
+						"name": strName,
+						"email": str
+			});
+			//start loading
+			function UnityProgress(gameInstance, progress) {
+				var container = document.getElementById("gameContainer");
+				// if (container) document.body.style.background = container.style.background;
+
+				if (!gameInstance.Module) {
+					return;
+				} else if (progress === "complete") {
+					document.getElementById("loadingBox").style.display = "none";
+					// document.getElementById("icon").style.display = "none";
+					document.getElementById("loadingInfo").style.display = "none";
+					document.getElementById("box").style.display = "none";
+				} else if (progress === 1 || progress === "preinit") {
+					document.getElementById("loadingInfo").innerHTML = "PROCESSING...";
+					document.getElementById("spinner").style.display = "inherit";
+					document.getElementById("bgBar").style.display = "none";
+					document.getElementById("progressBar").style.display = "none";
+				} else if (progress > 0) {
+					document.getElementById("progressBar").style.width = 300 * progress + "px"
+					document.getElementById("loadingInfo").innerHTML = Math.round(progress * 100) + "%";
+					document.getElementById("spinner").style.display = "none";
+					document.getElementById("bgBar").style.display = "block";
+					document.getElementById("progressBar").style.display = "inherit";
+				}
+			}
+			var gameInstance = UnityLoader.instantiate("gameContainer", "Build/Builds.json", {
+				onProgress: UnityProgress,
+				Module: {
+					onRuntimeInitialized: function () { UnityProgress(gameInstance, "complete"); },
+					preInit: [function () { UnityProgress(gameInstance, "preinit"); }]
+				}
+			});
+	}
+   }
+   function isEmpty(str){
+    return (str == null) || (str.length == 0);
+   }
+  </script>
+
+</head>
+
+<body>
+	<div id="bg_popup">
+	  <div id="popup">
+	   <div class="bg text-center text-white">
+		<div class="container">
+		 <img src="./Template/LenovoLogo.jpg" alt="logo" class="logo my-5">
+		  <h2 class="heading mb-2">Welcome to the Lenovo Virtual Experience for Higher Education</h2>
+			<!-- <h6>Enter your contact information below to continue to explore the world of Lenovo Educause.</h6> -->
+			<h4>
+				By entering this site, you'll be entered for a chance to win a daily prize of a Yeti Rambler. Hidden in the booth is an extra raffle prize as well! Please visit all of the demo stations to find it.
+			</h4>
+			<form action="/postdata/" method="POST" class="mt-5">
+			  <input type="hidden" name="csrfmiddlewaretoken" value="7qvDfF54A94TeGRmANT4lPwlmOxcYTpDLqDk8jAJBnty17iVWqTmsnvGw3MnU4eR"> 
+			   <label for="name" class="float-left my-2">NAME</label>
+			    <input type="text" required="" class="form-control" id="user_name" name="name">
+				 <label for="email" class="float-left mt-4 mb-2">EMAIL</label>
+				   <input type="text" required="" class="form-control mb-3" id="email" name="email">
+				<!-- <label for="agree" class="my-2">      <input type="checkbox" required class="mx-2" name="agree" id="agree">  <small> I agree to recieve product solution, and event information and promotional offers by email from Lenovo, and I confirm
+				that I am 16 years of age or older. You may unsubscribe at any time using links included in each message. 
+				</small> </label> -->
+			  <p>
+				<a class="text-white" href="/static/Educause Conference Giveaway Official Rules (final).docx">View Giveaway Rules</a>
+			  </p>
+				<button class="btn btn-success mb-3 mt-2 my-but" type="button"  onclick="isEmail()" style="background-color: #69BD4B; font-weight: bold">ENTER LENOVO VR EXPERIENCE</button>
+			</form>
+		</div>
+		<a class="text-white" href="https://www.lenovo.com/us/en/privacy/">Lenovo's Privacy Statement</a>
+	   </div>
+	 </div>
+	</div> 
+	<!-- <a id="video" video-url="https://www.youtube.com/watch?v=0wCC3aLXdOw">
+		Open Popup
+	</a> -->
+
+	<a id="video" style="display: none;" data-fancybox href="https://vimeo.com/191947042?color=f00"> Vimeo video -
+		custom color </a>
+
+	<div id="webgl-content" style="width:100%; height: 100%">
+		<div id="gameContainer" style="width: 100%; height: 100%"></div>
+	</div>
+	<div id="box"></div>
+	<div id="loadingBox">
+		<div id="spinner"></div>
+		<div id="bgBar"></div>
+		<div id="progressBar"></div>
+	</div>
+	<!-- <a target="_blank" href="http://www.kongregate.com"> <div id="icon"></div> </a> -->
+	<p id="loadingInfo"></p>
+
+
+
+	<div class="check-in-form" style="display: none;">
+		<div class="bg text-center text-white">
+			<div class="container">
+				<img src="./Template/LenovoLogo.jpg" alt="logo" class="logo my-5">
+				<h2 class="heading mb-2">Welcome to the Lenovo VR Experience</h2>
+				<h6>Enter your contact information below to continue to explore the world of Lenovo Educause.</h6>
+				<form id="confirmForm" class="mt-5">
+					<input type="hidden" name="csrfmiddlewaretoken"
+						value="zxGq4VQEMY0SZ9PNnZa3ZUIM6savtQQsxSbS9Xyow8c3dShaUjoOSjiOaWRyNPeo">
+					<label for="name" class="float-left my-2">NAME</label>
+					<input type="text" required="" class="form-control" id="name" name="name">
+					<label for="email" class="float-left mt-4 mb-2">EMAIL</label>
+					<input type="text" required="" class="form-control mb-3" id="email" name="email">
+					<label for="agree" class="my-2"> <input type="checkbox" required="" class="mx-2" name="agree"
+							id="agree"> <small> I agree to recieve product solution, and event information and
+							promotional offers by email from Lenovo, and i confirm
+							that I am 16 years of age or older. You may unsubscribe at any time using links included in
+							each message.
+						</small> </label>
+					<button id="checkInConfirmBtn" class="btn btn-success mt-5 my-but" type="submit"
+						style="background-color: #69BD4B; font-weight: bold">ENTER LENOVO VR EXPERIENCE</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+
+		const checkInForm = document.getElementById('confirmForm');
+		const checkInFormContainer = $('.check-in-form');
+		const checkInNameField = $('#name');
+		const checkInEmailField = $('#email');
+
+		$(document).ready(function () {
+			// $("#video").videoPopup();
+
+			$('[data-fancybox]').fancybox({
+				youtube: {
+					controls: 1,
+					showinfo: 0
+				},
+				vimeo: {
+					color: 'f00'
+				}
+			});
+
+			// const checkInForm = document.getElementById('confirmForm');
+			// checkInForm.submit(function (e) {
+			// 	e.preventDefault();
+			// });
+
+			checkInForm.addEventListener('submit', onSuccessSubmit);
+			// checkInConfirmBtn.addEventListener('click', function () {
+			// 	$('#webgl-content').css("display", "");
+			// });
+		});
+
+		function onSuccessSubmit(event) {
+			event.preventDefault();
+			$('#webgl-content').css("display", "");
+
+			// Send entered name and email to the Unity
+			let enteredName = checkInNameField.val();
+			let enteredEmail = checkInEmailField.val();
+			gameInstance.SendMessage('[SceneEntrypoint]', 'OnUserNameEntered', enteredName);
+			gameInstance.SendMessage('[SceneEntrypoint]', 'OnUserEmailEntered', enteredEmail);
+			gameInstance.SendMessage('[SceneEntrypoint]', 'OnCheckInFormClosed');
+			checkInFormContainer.css("display", "none");
+		}
+
+
+		// $(function () {
+		// 	$("#video").videoPopup();
+		// });
+	</script>
+
+</body>
+
+</html>
