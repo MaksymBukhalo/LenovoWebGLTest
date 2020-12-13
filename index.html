@@ -252,29 +252,30 @@
 			   #bg_popup{
 			background-color: rgba(0, 0, 0, 0.8);
 			display: none;
+			width 100%;
+			height 100%;
 			position: fixed;
-			z-index: 99999;
+			z-index: 100;
 			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
+			bottom:0;
+			left:0;
+			right:0;
 			}
   
 			#popup {
 			background: #232323;
-			display:block;
-			position:absolute;
-			top: -45%;
-			right:0px;
-			bottom:0px;
-			left: 0;
+			display: block;
 			width: 90%;
-			height: 90%;
+			height: 80%;
+			position: fixed;
+			top: -300px;
+			bottom:0;
+			left:0;
+			right:0;
 			background-image: url("./Template/Background.png");
 			margin: 25% auto;
-			padding: 5px 20px 13px 20px;
+			padding: 10% auto;
 			border: 2px solid #1BA600;
-			position: relative;
 			-webkit-box-shadow: 0px 0px 20px #000;
 			-moz-box-shadow: 0px 0px 20px #000;
 			box-shadow: 0px 0px 20px #000;
@@ -361,7 +362,7 @@
 <body>
 	<div id="bg_popup">
 	  <div id="popup">
-	   <div class="bg text-center text-white">
+	   <div class="bg text-center text-white" style="width:100%; height: 100%">
 		<div class="container">
 		 <img src="./Template/LenovoLogo.jpg" alt="logo" class="logo my-5">
 		  <h2 class="heading mb-2">Welcome to the Lenovo Virtual Experience for Higher Education</h2>
